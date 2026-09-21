@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data
+data/raw/*
+data/processed/*
+data/external/*
+
+# Trained models / weights
+models/*
+*.pt
+*.pth
+*.onnx
+*.h5
+*.keras
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+frontend/dist/
+frontend/build/
+
+# Temporary files
+*.tmp
+*.temp
