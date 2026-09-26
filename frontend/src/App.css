@@ -1,0 +1,986 @@
+.app {
+  min-height: 100vh;
+  color: #e8edf7;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 28px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background: linear-gradient(135deg,
+      #7c5cff,
+      #4c8dff);
+
+  color: white;
+  font-size: 22px;
+  box-shadow: 0 8px 30px rgba(108, 92, 255, 0.25);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  color: #8791a5;
+  font-size: 13px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 13px;
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
+
+  color: #aeb8cc;
+  font-size: 13px;
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #47d7a1;
+  box-shadow: 0 0 12px rgba(71, 215, 161, 0.7);
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero-section {
+  padding: 72px 0 55px;
+
+  display: grid;
+  grid-template-columns: 1fr 470px;
+  gap: 70px;
+
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 11px;
+
+  border-radius: 999px;
+
+  background: rgba(124, 92, 255, 0.1);
+  border: 1px solid rgba(124, 92, 255, 0.25);
+
+  color: #9f8cff;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero-content h2 {
+  margin: 18px 0;
+
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 1.02;
+
+  letter-spacing: -3px;
+}
+
+.hero-content h2 span {
+  background: linear-gradient(90deg,
+      #9b86ff,
+      #55a8ff);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  max-width: 610px;
+
+  color: #8e99ad;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* =========================
+   UPLOAD CARD
+========================= */
+
+.upload-card {
+  padding: 10px;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.35),
+    inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.drop-zone {
+  min-height: 370px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border-radius: 18px;
+
+  border: 1px dashed rgba(140, 153, 180, 0.3);
+
+  background:
+    radial-gradient(circle at center,
+      rgba(124, 92, 255, 0.08),
+      transparent 65%);
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.drop-zone:hover {
+  border-color: rgba(140, 125, 255, 0.65);
+
+  background:
+    radial-gradient(circle at center,
+      rgba(124, 92, 255, 0.13),
+      transparent 65%);
+}
+
+.upload-icon {
+  width: 58px;
+  height: 58px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 17px;
+
+  background: rgba(124, 92, 255, 0.13);
+
+  color: #a393ff;
+
+  font-size: 27px;
+}
+
+.drop-zone h3 {
+  margin: 0;
+
+  font-size: 20px;
+}
+
+.drop-zone p {
+  margin: 9px 0 22px;
+
+  color: #7f8a9e;
+  font-size: 14px;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary-button,
+.secondary-button {
+  border: none;
+  border-radius: 11px;
+
+  padding: 11px 18px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.primary-button {
+  color: white;
+
+  background: linear-gradient(135deg,
+      #795cff,
+      #4c86ff);
+
+  box-shadow: 0 8px 25px rgba(94, 88, 255, 0.22);
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 12px 30px rgba(94, 88, 255, 0.32);
+}
+
+.primary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.secondary-button {
+  color: #b7c0d2;
+
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+
+/* =========================
+   PREVIEW
+========================= */
+
+.preview-area {
+  padding: 20px;
+
+  text-align: center;
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 300px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: 15px;
+
+  background: #0b0d13;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.file-name {
+  margin: 13px 0;
+
+  color: #9ba5b8;
+
+  font-size: 12px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+  margin: 0 0 35px;
+  padding: 18px 20px;
+
+  border-radius: 15px;
+
+  border: 1px solid rgba(255, 91, 112, 0.25);
+
+  background: rgba(255, 91, 112, 0.07);
+
+  color: #ff9cae;
+}
+
+.error-message strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.error-message p {
+  margin: 0;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+.results-section {
+  padding: 45px 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.section-heading h2 {
+  margin: 12px 0 0;
+
+  font-size: 31px;
+  letter-spacing: -1px;
+}
+
+
+/* =========================
+   PREDICTION
+========================= */
+
+.prediction-card {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+
+  padding: 27px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(124, 92, 255, 0.22);
+
+  background:
+    linear-gradient(135deg,
+      rgba(124, 92, 255, 0.11),
+      rgba(67, 122, 255, 0.045));
+}
+
+.result-label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #7f8a9f;
+
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.prediction-main h3 {
+  margin: 0;
+
+  font-size: 29px;
+}
+
+.class-code {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  color: #9383ff;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.confidence-box {
+  padding-left: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.confidence-box strong {
+  font-size: 31px;
+}
+
+
+/* =========================
+   UNCERTAIN
+========================= */
+
+.uncertain-card {
+  display: flex;
+  gap: 20px;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(255, 184, 77, 0.25);
+
+  background: rgba(255, 184, 77, 0.06);
+}
+
+.uncertain-icon {
+  width: 45px;
+  height: 45px;
+
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background: rgba(255, 184, 77, 0.12);
+
+  color: #ffc267;
+
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.uncertain-card h3 {
+  margin: 2px 0 8px;
+
+  font-size: 20px;
+}
+
+.uncertain-card p {
+  margin: 0;
+
+  color: #929caf;
+
+  line-height: 1.6;
+}
+
+.uncertain-card .disclaimer {
+  margin-top: 12px;
+
+  color: #c39b58;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   METRICS
+========================= */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 15px;
+
+  margin-top: 15px;
+}
+
+.metric-card {
+  padding: 21px;
+
+  border-radius: 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.metric-card span {
+  display: block;
+
+  color: #788398;
+
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.metric-card strong {
+  display: block;
+
+  margin-top: 8px;
+
+  font-size: 22px;
+}
+
+.ood-text {
+  color: #ffb866;
+}
+
+.supported-text {
+  color: #54d9a0;
+}
+
+
+/* =========================
+   PROBABILITIES
+========================= */
+
+.probability-card {
+  margin-top: 15px;
+  padding: 25px;
+
+  border-radius: 19px;
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.probability-card h3 {
+  margin: 0 0 23px;
+
+  font-size: 16px;
+}
+
+.probability-row {
+  margin-bottom: 17px;
+}
+
+.probability-label {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+
+  color: #9ba5b8;
+
+  font-size: 12px;
+}
+
+.progress-bar {
+  height: 6px;
+
+  overflow: hidden;
+
+  border-radius: 99px;
+
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(90deg,
+      #755cff,
+      #55a3ff);
+
+  transition: width 0.5s ease;
+}
+
+
+/* =========================
+   DISCLAIMER
+========================= */
+
+.disclaimer-card {
+  margin-top: 15px;
+  padding: 18px 20px;
+
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.025);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.disclaimer-card strong {
+  color: #aeb8ca;
+
+  font-size: 12px;
+}
+
+.disclaimer-card p {
+  margin: 7px 0 0;
+
+  color: #707b90;
+
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+
+/* =========================
+   ASSISTANT
+========================= */
+
+.assistant-section {
+  margin: 45px 0 80px;
+  padding: 30px;
+
+  border-radius: 23px;
+
+  border: 1px solid rgba(124, 92, 255, 0.15);
+
+  background:
+    radial-gradient(circle at top right,
+      rgba(124, 92, 255, 0.09),
+      transparent 45%),
+    rgba(255, 255, 255, 0.025);
+}
+
+.assistant-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.assistant-icon {
+  width: 50px;
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 15px;
+
+  background: rgba(124, 92, 255, 0.13);
+
+  color: #9d8cff;
+
+  font-size: 22px;
+}
+
+.assistant-header h2 {
+  margin: 7px 0 5px;
+
+  font-size: 24px;
+}
+
+.assistant-header p {
+  margin: 0;
+
+  color: #7e899d;
+
+  font-size: 13px;
+}
+
+.chat-placeholder {
+  margin-top: 27px;
+
+  padding: 22px;
+
+  border-radius: 16px;
+
+  background: rgba(0, 0, 0, 0.15);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chat-message {
+  display: flex;
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.assistant-avatar {
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background: #715bff;
+
+  color: white;
+}
+
+.chat-message strong {
+  font-size: 13px;
+}
+
+.chat-message p {
+  margin: 5px 0 0;
+
+  color: #7f899d;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 9px;
+}
+
+.chat-input-row input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 11px;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  color: white;
+
+  font-family: inherit;
+}
+
+.chat-input-row input::placeholder {
+  color: #687287;
+}
+
+.chat-input-row button {
+  padding: 0 19px;
+
+  border: none;
+  border-radius: 11px;
+
+  background: #735cff;
+
+  color: white;
+
+  font-weight: 600;
+
+  opacity: 0.4;
+}
+
+.chat-placeholder small {
+  display: block;
+
+  margin-top: 12px;
+
+  color: #606b7f;
+
+  font-size: 10px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  width: min(1180px, calc(100% - 40px));
+
+  margin: 0 auto;
+  padding: 25px 0 35px;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  color: #5e687b;
+
+  font-size: 11px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+  .hero-section {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .hero-content {
+    max-width: none;
+  }
+
+  .prediction-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .confidence-box {
+    padding: 18px 0 0;
+
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .header {
+    width: min(100% - 24px, 1180px);
+  }
+
+  main {
+    width: min(100% - 24px, 1180px);
+  }
+
+  .hero-section {
+    padding-top: 45px;
+  }
+
+  .hero-content h2 {
+    font-size: 42px;
+    letter-spacing: -2px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  .assistant-section {
+    padding: 20px;
+  }
+
+  footer {
+    width: min(100% - 24px, 1180px);
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+/* =========================================
+   EXPLAINABLE AI / GRAD-CAM
+   ========================================= */
+
+.gradcam-card {
+  margin-top: 20px;
+  padding: 24px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.gradcam-header {
+  margin-bottom: 22px;
+}
+
+.gradcam-header h3 {
+  margin: 8px 0 6px;
+  font-size: 22px;
+}
+
+.gradcam-header p {
+  margin: 0;
+  opacity: 0.7;
+  line-height: 1.6;
+}
+
+.gradcam-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.gradcam-panel {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gradcam-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gradcam-image {
+  width: 100%;
+  display: block;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #080808;
+}
+
+.gradcam-note {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 13px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+@media (max-width: 700px) {
+
+  .gradcam-content {
+    grid-template-columns: 1fr;
+  }
+
+}
