@@ -1,7 +1,27 @@
+# Web API
 fastapi
 uvicorn[standard]
 python-multipart
 pydantic
 pydantic-settings
 python-dotenv
+
+# Image processing / data
 Pillow
+numpy
+pandas
+opencv-python
+albumentations
+
+# Machine learning utilities
+scikit-learn
+matplotlib
+seaborn
+requests
+
+# Explainability
+grad-cam
+
+# PyTorch and torchvision should be installed separately using
+# the official PyTorch installation instructions appropriate
+# for the target machine/GPU.
