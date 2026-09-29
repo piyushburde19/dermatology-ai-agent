@@ -1,458 +1,404 @@
+from typing import Optional, Dict
+
 from fastapi import APIRouter
 from pydantic import BaseModel
+
 
 router = APIRouter()
 
 
-# ============================================================
-# REQUEST MODEL
-# ============================================================
-
-class ChatRequest(BaseModel):
-    message: str
-    prediction: str | None = None
-    confidence: float | None = None
-    ood: bool | None = None
-
-
-# ============================================================
-# CLASS INFORMATION
-# ============================================================
-
-CLASS_INFO = {
-    "ACK": {
-        "name": "Actinic Keratosis",
-        "description": (
-            "Actinic keratosis is a rough or scaly skin lesion "
-            "that can occur on areas of skin exposed to sunlight."
-        ),
-    },
-
-    "BCC": {
-        "name": "Basal Cell Carcinoma",
-        "description": (
-            "Basal cell carcinoma is a type of skin cancer that "
-            "commonly develops in sun-exposed areas of the skin."
-        ),
-    },
-
-    "MEL": {
-        "name": "Melanoma",
-        "description": (
-            "Melanoma is a type of skin cancer that develops "
-            "from pigment-producing cells."
-        ),
-    },
-
-    "NEV": {
-        "name": "Nevus",
-        "description": (
-            "A nevus is a common type of mole or pigmented skin lesion."
-        ),
-    },
-
-    "SCC": {
-        "name": "Squamous Cell Carcinoma",
-        "description": (
-            "Squamous cell carcinoma is a type of skin cancer "
-            "that can occur on different areas of the skin."
-        ),
-    },
-
-    "SEK": {
-        "name": "Seborrheic Keratosis",
-        "description": (
-            "Seborrheic keratosis is a common benign skin growth "
-            "that can appear as a raised, rough, or waxy lesion."
-        ),
-    },
+CLASS_NAMES = {
+    "ACK": "Actinic Keratosis",
+    "BCC": "Basal Cell Carcinoma",
+    "MEL": "Melanoma",
+    "NEV": "Nevus",
+    "SCC": "Squamous Cell Carcinoma",
+    "SEK": "Seborrheic Keratosis",
 }
 
 
-# ============================================================
-# HELPER FUNCTIONS
-# ============================================================
+class ChatRequest(BaseModel):
+    message: str
 
-def get_class_info(prediction: str):
-    """
-    Convert the model class code into human-readable information.
-    """
+    prediction: Optional[str] = None
+    confidence: Optional[float] = None
+    ood: Optional[bool] = None
 
-    if prediction is None:
-        return None
+    similarity: Optional[float] = None
+    entropy: Optional[float] = None
+    assessment: Optional[str] = None
+    review_required: Optional[bool] = None
+    gradcam_available: Optional[bool] = None
+    probabilities: Optional[Dict[str, float]] = None
 
-    return CLASS_INFO.get(
-        prediction.upper(),
-        {
-            "name": prediction,
-            "description": (
-                "The system returned a prediction that is not "
-                "mapped to a known supported class."
-            ),
-        },
+
+def format_class_name(class_code: Optional[str]) -> str:
+
+    if not class_code:
+        return "the predicted class"
+
+    return CLASS_NAMES.get(
+        class_code,
+        class_code,
     )
 
 
-def format_confidence(confidence: float | None) -> str:
-    """
-    Format confidence safely.
-    """
+def get_prediction_context(request: ChatRequest):
 
-    if confidence is None:
-        return "an unspecified confidence"
+    if request.ood:
+        return (
+            "The uploaded image was marked as "
+            "Unsupported / Uncertain by the system."
+        )
 
-    return f"{confidence:.2f}%"
+    if not request.prediction:
+        return (
+            "No image analysis result is currently "
+            "available."
+        )
 
-
-# ============================================================
-# RESPONSE GENERATOR
-# ============================================================
-
-def generate_response(request: ChatRequest) -> str:
-
-    message = request.message.lower().strip()
-
-    prediction = request.prediction
-    confidence = request.confidence
-    ood = request.ood
-
-    class_info = get_class_info(prediction)
-
-    class_name = (
-        class_info["name"]
-        if class_info
-        else prediction
+    condition = format_class_name(
+        request.prediction
     )
 
-    class_description = (
-        class_info["description"]
-        if class_info
-        else ""
-    )
+    confidence_text = ""
 
-
-    # ========================================================
-    # GREETING
-    # ========================================================
-
-    if message in [
-        "hi",
-        "hello",
-        "hey",
-        "hii",
-        "hiii",
-    ]:
-
-        return (
-            "Hello! I am the Dermatology AI Assistant. "
-            "I can help explain the AI image-analysis result, "
-            "confidence, uncertainty screening, supported classes, "
-            "and general dermatology concepts."
+    if request.confidence is not None:
+        confidence_text = (
+            f" with {request.confidence:.2f}% confidence"
         )
-
-
-    # ========================================================
-    # OOD / UNSUPPORTED IMAGE
-    # ========================================================
-
-    if ood:
-
-        if any(word in message for word in [
-            "result",
-            "prediction",
-            "mean",
-            "why",
-            "uncertain",
-            "wrong",
-            "ood",
-            "unsupported",
-        ]):
-
-            return (
-                "The uploaded image was marked as "
-                "Unsupported / Uncertain by the image-analysis "
-                "system. This means the image did not meet the "
-                "system's current similarity and uncertainty "
-                "criteria for the supported dermatology classes. "
-                "The result should not be interpreted as a medical "
-                "diagnosis."
-            )
-
-
-        if any(word in message for word in [
-            "what",
-            "explain",
-            "tell",
-        ]):
-
-            return (
-                "The system could not confidently place this image "
-                "within its supported dermatology classes. "
-                "This is an uncertainty screening result rather "
-                "than a diagnosis. A qualified healthcare "
-                "professional should evaluate any concerning "
-                "skin finding."
-            )
-
-
-        if any(word in message for word in [
-            "do",
-            "next",
-            "doctor",
-            "dermatologist",
-        ]):
-
-            return (
-                "Because the image was marked as "
-                "Unsupported / Uncertain, the AI result should "
-                "not be used to determine what the skin finding "
-                "is. If the lesion is persistent, changing, "
-                "painful, bleeding, or otherwise concerning, "
-                "consider evaluation by a qualified dermatologist."
-            )
-
-
-        return (
-            "The image-analysis system marked this image as "
-            "Unsupported / Uncertain. I can explain the result "
-            "and the uncertainty screening, but I cannot provide "
-            "a medical diagnosis from the image."
-        )
-
-
-    # ========================================================
-    # RESULT EXPLANATION
-    # ========================================================
-
-    if prediction:
-
-        if any(phrase in message for phrase in [
-            "what does my result mean",
-            "what does the result mean",
-            "what does my prediction mean",
-            "what does this result mean",
-            "explain my result",
-            "explain the result",
-            "explain prediction",
-            "what is my result",
-        ]):
-
-            confidence_text = format_confidence(
-                confidence
-            )
-
-            return (
-                f"The image-analysis system predicted "
-                f"{class_name} ({prediction}) with "
-                f"{confidence_text} confidence. "
-                f"{class_description} "
-                f"The confidence represents the model's "
-                f"estimated probability for its predicted class "
-                f"within the supported classes. It does not mean "
-                f"that the condition has been medically confirmed. "
-                f"This is an AI-assisted preliminary analysis and "
-                f"should not be treated as a medical diagnosis."
-            )
-
-
-        # ====================================================
-        # CONFIDENCE
-        # ====================================================
-
-        if any(word in message for word in [
-            "confidence",
-            "accurate",
-            "accuracy",
-            "sure",
-            "certain",
-        ]):
-
-            confidence_text = format_confidence(
-                confidence
-            )
-
-            return (
-                f"The model assigned {confidence_text} confidence "
-                f"to the predicted class, {class_name}. "
-                f"This confidence is a model output and should "
-                f"not be interpreted as the probability that a "
-                f"doctor would make the same diagnosis. "
-                f"Clinical examination is still required."
-            )
-
-
-        # ====================================================
-        # WHAT IS THE PREDICTED CONDITION?
-        # ====================================================
-
-        if (
-            "what is" in message
-            or "what does" in message
-            or "tell me about" in message
-            or "explain" in message
-        ) and (
-            prediction.lower() in message
-            or class_name.lower() in message
-            or "condition" in message
-            or "disease" in message
-        ):
-
-            return (
-                f"The predicted class is {class_name} ({prediction}). "
-                f"{class_description} "
-                f"In this project, the model's prediction is used "
-                f"for preliminary image analysis only and does not "
-                f"confirm the presence of the condition."
-            )
-
-
-        # ====================================================
-        # WHAT SHOULD I DO?
-        # ====================================================
-
-        if any(phrase in message for phrase in [
-            "what should i do",
-            "what should i do next",
-            "what do i do",
-            "next step",
-            "next steps",
-            "should i see a doctor",
-            "should i see dermatologist",
-        ]):
-
-            return (
-                f"The AI system predicted {class_name}, but this "
-                f"should not be treated as a confirmed diagnosis. "
-                f"If the skin lesion is persistent, changing, "
-                f"painful, bleeding, growing, or otherwise "
-                f"concerning, consider evaluation by a qualified "
-                f"dermatologist."
-            )
-
-
-        # ====================================================
-        # IS IT DANGEROUS?
-        # ====================================================
-
-        if any(phrase in message for phrase in [
-            "is it dangerous",
-            "is this dangerous",
-            "should i worry",
-            "is it serious",
-            "is this serious",
-        ]):
-
-            return (
-                f"The AI prediction of {class_name} alone cannot "
-                f"determine whether a skin finding is dangerous "
-                f"or serious. The model provides preliminary "
-                f"image analysis only. A dermatologist should "
-                f"evaluate concerning or changing lesions."
-            )
-
-
-        # ====================================================
-        # GENERAL CONDITION QUESTION
-        # ====================================================
-
-        if (
-            class_name
-            and (
-                class_name.lower() in message
-                or prediction.lower() in message
-            )
-        ):
-
-            return (
-                f"{class_name} ({prediction}): "
-                f"{class_description} "
-                f"Remember that the AI prediction in this project "
-                f"is preliminary and does not establish a medical "
-                f"diagnosis."
-            )
-
-
-    # ========================================================
-    # DIAGNOSIS QUESTION
-    # ========================================================
-
-    if "diagnosis" in message or "diagnose" in message:
-
-        if prediction:
-
-            return (
-                f"The AI system predicted {class_name}, but "
-                f"this does not constitute a confirmed diagnosis. "
-                f"The model is designed for preliminary research "
-                f"image analysis. A qualified healthcare "
-                f"professional should evaluate the skin finding."
-            )
-
-        return (
-            "I can explain the AI image-analysis system, but I "
-            "cannot provide or confirm a medical diagnosis. "
-            "A qualified healthcare professional should evaluate "
-            "concerning skin findings."
-        )
-
-
-    # ========================================================
-    # GENERAL DERMATOLOGY QUESTION
-    # ========================================================
-
-    if any(word in message for word in [
-        "skin",
-        "lesion",
-        "mole",
-        "rash",
-        "spot",
-        "itch",
-        "bleeding",
-    ]):
-
-        return (
-            "I can provide general information about dermatology "
-            "and explain the AI image-analysis result. However, "
-            "symptoms and skin findings can have many possible "
-            "causes, so a qualified healthcare professional should "
-            "evaluate persistent or concerning findings."
-        )
-
-
-    # ========================================================
-    # DEFAULT
-    # ========================================================
-
-    if prediction:
-
-        return (
-            f"The current AI analysis predicts {class_name} "
-            f"({prediction}) with "
-            f"{format_confidence(confidence)} confidence. "
-            f"I can explain what this prediction means, explain "
-            f"the confidence, discuss the predicted class, or "
-            f"explain what the next steps could be."
-        )
-
 
     return (
-        "I can help explain the AI image-analysis result, "
-        "supported dermatology classes, confidence, uncertainty "
-        "screening, and general dermatology information. "
-        "Please ask a specific question."
+        f"The current AI analysis predicts "
+        f"{condition}{confidence_text}."
     )
 
-
-# ============================================================
-# API ENDPOINT
-# ============================================================
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
 
-    response = generate_response(request)
+    message = request.message.strip().lower()
+
+    prediction = request.prediction
+    condition = format_class_name(prediction)
+
+    # ==========================================================
+    # NO ANALYSIS AVAILABLE
+    # ==========================================================
+
+    if not prediction and not request.ood:
+
+        return {
+            "response": (
+                "Please upload and analyze a dermatology "
+                "image first. Once an analysis is available, "
+                "I can explain the prediction, confidence, "
+                "uncertainty signals, and next steps."
+            )
+        }
+
+    # ==========================================================
+    # OUT-OF-DOMAIN / UNSUPPORTED IMAGE
+    # ==========================================================
+
+    if request.ood:
+
+        if (
+            "why" in message
+            or "result" in message
+            or "mean" in message
+        ):
+
+            return {
+                "response": (
+                    "The system marked this image as "
+                    "Unsupported / Uncertain because it did "
+                    "not meet the model's supported-image "
+                    "criteria. The model may still produce "
+                    "a raw prediction internally, but that "
+                    "prediction should not be treated as a "
+                    "reliable classification for this image."
+                )
+            }
+
+        if (
+            "next" in message
+            or "do" in message
+            or "should" in message
+        ):
+
+            return {
+                "response": (
+                    "Because the image was marked "
+                    "Unsupported / Uncertain, the system "
+                    "should not be relied on for a disease "
+                    "classification from this image. "
+                    "Consider obtaining an appropriate "
+                    "clinical image and, if the lesion is "
+                    "concerning, seek evaluation by a "
+                    "qualified dermatologist."
+                )
+            }
+
+        return {
+            "response": (
+                "This image was marked "
+                "Unsupported / Uncertain by the AI system. "
+                "I can explain the uncertainty result and "
+                "what the system's analysis means."
+            )
+        }
+
+    # ==========================================================
+    # WHAT DOES MY RESULT MEAN?
+    # ==========================================================
+
+    if (
+        "what does" in message
+        or "what is my result" in message
+        or "result mean" in message
+        or "meaning" in message
+    ):
+
+        confidence_text = ""
+
+        if request.confidence is not None:
+            confidence_text = (
+                f" The model reported "
+                f"{request.confidence:.2f}% confidence."
+            )
+
+        return {
+            "response": (
+                f"The image-analysis system predicted "
+                f"{condition}.{confidence_text} "
+                f"This is an AI-assisted preliminary "
+                f"prediction and does not confirm that the "
+                f"condition is medically present."
+            )
+        }
+
+    # ==========================================================
+    # WHY DID THE SYSTEM GIVE THIS RESULT?
+    # ==========================================================
+
+    if (
+        "why" in message
+        and (
+            "result" in message
+            or "prediction" in message
+            or "give" in message
+            or "this" in message
+        )
+    ):
+
+        confidence_text = ""
+
+        if request.confidence is not None:
+            confidence_text = (
+                f"The reported confidence was "
+                f"{request.confidence:.2f}%."
+            )
+
+        uncertainty_text = ""
+
+        if request.assessment == "Review Recommended":
+            uncertainty_text = (
+                " The uncertainty agent also recommended "
+                "human review of this result."
+            )
+        elif request.assessment == "Supported":
+            uncertainty_text = (
+                " The image passed the system's supported "
+                "image checks."
+            )
+
+        probability_text = ""
+
+        if request.probabilities:
+
+            sorted_probs = sorted(
+                request.probabilities.items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+
+            top_classes = sorted_probs[:2]
+
+            if top_classes:
+
+                probability_text = (
+                    " The model's class probabilities "
+                    "were used to select the highest-"
+                    "probability class."
+                )
+
+        return {
+            "response": (
+                f"The system predicted {condition} because "
+                f"this was the model's highest-probability "
+                f"supported class for the uploaded image."
+                f"{probability_text}"
+                f"{confidence_text}"
+                f"{uncertainty_text} "
+                "The prediction should be interpreted as "
+                "AI-assisted analysis rather than a confirmed "
+                "medical diagnosis."
+            )
+        }
+
+    # ==========================================================
+    # CONFIDENCE
+    # ==========================================================
+
+    if (
+        "confidence" in message
+        or "sure" in message
+        or "certain" in message
+    ):
+
+        if request.confidence is not None:
+
+            return {
+                "response": (
+                    f"The model reported "
+                    f"{request.confidence:.2f}% confidence "
+                    f"for the predicted class, "
+                    f"{condition}. Confidence is a model "
+                    f"output and should not be interpreted "
+                    f"as the probability that a patient "
+                    f"actually has the condition."
+                )
+            }
+
+        return {
+            "response": (
+                "The confidence value is not available "
+                "for this analysis."
+            )
+        }
+
+    # ==========================================================
+    # UNCERTAINTY / REVIEW
+    # ==========================================================
+
+    if (
+        "uncertain" in message
+        or "uncertainty" in message
+        or "review" in message
+        or "risk" in message
+    ):
+
+        if request.review_required:
+
+            return {
+                "response": (
+                    "The Risk & Uncertainty Agent has "
+                    "recommended human review. This can "
+                    "happen when the prediction confidence "
+                    "is below the configured threshold or "
+                    "when prediction uncertainty is elevated."
+                )
+            }
+
+        return {
+            "response": (
+                "The current analysis was not routed for "
+                "additional review by the Risk & Uncertainty "
+                "Agent."
+            )
+        }
+
+    # ==========================================================
+    # GRAD-CAM / EXPLANATION
+    # ==========================================================
+
+    if (
+        "grad-cam" in message
+        or "gradcam" in message
+        or "explain" in message
+        or "look" in message
+        or "attention" in message
+    ):
+
+        if request.gradcam_available:
+
+            return {
+                "response": (
+                    "Grad-CAM provides a visual explanation "
+                    "of the image regions that contributed "
+                    "to the model's prediction. It helps "
+                    "inspect where the model focused, but "
+                    "the heatmap is not proof that those "
+                    "regions establish a medical diagnosis."
+                )
+            }
+
+        return {
+            "response": (
+                "A Grad-CAM explanation is not available "
+                "for this analysis."
+            )
+        }
+
+    # ==========================================================
+    # NEXT STEP
+    # ==========================================================
+
+    if (
+        "what should i do" in message
+        or "what should i do next" in message
+        or "next step" in message
+        or "next steps" in message
+        or "what do i do" in message
+    ):
+
+        return {
+            "response": (
+                f"The AI system predicted {condition}, "
+                "but this should not be treated as a "
+                "confirmed diagnosis. If the skin lesion "
+                "is persistent, changing, painful, bleeding, "
+                "growing, or otherwise concerning, consider "
+                "evaluation by a qualified dermatologist."
+            )
+        }
+
+    # ==========================================================
+    # OUT-OF-CONTEXT QUESTIONS
+    # ==========================================================
+
+    weather_keywords = [
+        "weather",
+        "temperature",
+        "forecast",
+        "rain",
+        "snow",
+    ]
+
+    if any(
+        keyword in message
+        for keyword in weather_keywords
+    ):
+
+        return {
+            "response": (
+                "I'm the Dermatology AI Assistant, so I'm "
+                "designed to answer questions related to "
+                "the uploaded skin image and its analysis. "
+                "I can't provide weather information."
+            )
+        }
+
+    # ==========================================================
+    # DEFAULT DERMATOLOGY RESPONSE
+    # ==========================================================
 
     return {
-        "response": response,
-        "agent": "Dermatology AI Assistant",
+        "response": (
+            f"The current AI analysis predicts {condition}. "
+            "I can explain the prediction, confidence, "
+            "uncertainty signals, Grad-CAM explanation, "
+            "or possible next steps."
+        )
     }

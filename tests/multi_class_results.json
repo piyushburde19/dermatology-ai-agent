@@ -1,0 +1,56 @@
+[
+  {
+    "actual_class": "ACK",
+    "image": "PAT_359_4450_86.png",
+    "prediction": "ACK",
+    "confidence": 99.39,
+    "ood": false,
+    "assessment": "Supported",
+    "report_status": "completed"
+  },
+  {
+    "actual_class": "BCC",
+    "image": "PAT_134_201_587.png",
+    "prediction": "BCC",
+    "confidence": 99.72,
+    "ood": false,
+    "assessment": "Supported",
+    "report_status": "completed"
+  },
+  {
+    "actual_class": "MEL",
+    "image": "PAT_233_354_935.png",
+    "prediction": "Unsupported / Uncertain",
+    "confidence": 45.82,
+    "ood": true,
+    "assessment": "Unsupported",
+    "report_status": "completed"
+  },
+  {
+    "actual_class": "NEV",
+    "image": "PAT_1453_1567_250.png",
+    "prediction": "NEV",
+    "confidence": 99.96,
+    "ood": false,
+    "assessment": "Supported",
+    "report_status": "completed"
+  },
+  {
+    "actual_class": "SCC",
+    "image": "PAT_882_1677_789.png",
+    "prediction": "ACK",
+    "confidence": 92.68,
+    "ood": false,
+    "assessment": "Supported",
+    "report_status": "completed"
+  },
+  {
+    "actual_class": "SEK",
+    "image": "PAT_1653_2916_346.png",
+    "prediction": "SEK",
+    "confidence": 94.61,
+    "ood": false,
+    "assessment": "Supported",
+    "report_status": "completed"
+  }
+]

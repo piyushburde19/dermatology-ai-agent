@@ -1,0 +1,54 @@
+{
+  "total_test_images": 460,
+  "supported_images": 403,
+  "ood_images": 57,
+  "overall_ood_rejection_rate": 12.39,
+  "accuracy_on_supported_images": 68.24,
+  "similarity_threshold": 0.37,
+  "confidence_threshold": 0.85,
+  "entropy_threshold": 0.6,
+  "class_summary": {
+    "ACK": {
+      "total_images": 146,
+      "ood_images": 22,
+      "supported_images": 124,
+      "ood_rejection_rate": 15.07,
+      "accuracy_on_supported": 74.19
+    },
+    "BCC": {
+      "total_images": 169,
+      "ood_images": 19,
+      "supported_images": 150,
+      "ood_rejection_rate": 11.24,
+      "accuracy_on_supported": 74.0
+    },
+    "MEL": {
+      "total_images": 10,
+      "ood_images": 2,
+      "supported_images": 8,
+      "ood_rejection_rate": 20.0,
+      "accuracy_on_supported": 50.0
+    },
+    "NEV": {
+      "total_images": 49,
+      "ood_images": 2,
+      "supported_images": 47,
+      "ood_rejection_rate": 4.08,
+      "accuracy_on_supported": 74.47
+    },
+    "SCC": {
+      "total_images": 39,
+      "ood_images": 10,
+      "supported_images": 29,
+      "ood_rejection_rate": 25.64,
+      "accuracy_on_supported": 20.69
+    },
+    "SEK": {
+      "total_images": 47,
+      "ood_images": 2,
+      "supported_images": 45,
+      "ood_rejection_rate": 4.26,
+      "accuracy_on_supported": 60.0
+    }
+  }
+}
